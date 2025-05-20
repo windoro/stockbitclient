@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.36105.23 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockbitClient", "StockbitClient.csproj", "{AEB2BA82-A010-4B5B-9BAD-8134A07B8D91}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AEB2BA82-A010-4B5B-9BAD-8134A07B8D91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEB2BA82-A010-4B5B-9BAD-8134A07B8D91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEB2BA82-A010-4B5B-9BAD-8134A07B8D91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEB2BA82-A010-4B5B-9BAD-8134A07B8D91}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6C0B6E18-A285-4722-86E3-9C9936F51B1C}
+	EndGlobalSection
+EndGlobal
