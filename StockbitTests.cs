@@ -5,8 +5,6 @@ namespace StockbitClient
     [TestClass]
     public class StockbitTests
     {
-        // todo calvin push this to github
-        // todo calvin publish this to nuget
         [TestMethod]
         public async Task TestLogin()
         {
