@@ -96,7 +96,12 @@ namespace StockbitClient
                     @"() => !document.body.innerText.includes('I\'m not a robot')",
                     new WaitForFunctionOptions { Timeout = 60000 } // 60 seconds timeout
                 );
-                await page.ClickAsync("#email-login-button");
+
+                var button = await page.QuerySelectorAsync("#email-login-button");
+                if (button != null)
+                {
+                    await button.ClickAsync();
+                }
             }
             catch (PuppeteerException ex)
             {
