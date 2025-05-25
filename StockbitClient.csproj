@@ -11,6 +11,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IsPackable>true</IsPackable>
     <Title>Stockbit Client</Title>
+    <Description>A client library for accessing Stockbit (Indonesian web stock data).</Description>
     <RepositoryUrl>https://github.com/windoro/stockbitclient</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
