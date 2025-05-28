@@ -41,34 +41,55 @@ namespace StockbitClient
 
             await Navigate(page, "https://stockbit.com/login");
             await PutCredentialAndLogin(username, password, page);
-            await HandleCaptcha(page);
-
-            Thread.Sleep(10000);
+            await WaitUntilLogin();
 
             await browser.CloseAsync();
         }
 
+        private async Task WaitUntilLogin()
+        {
+            var count = 0;
+            while (string.IsNullOrEmpty(this.accessToken))
+            {
+                await Task.Delay(10000);
+                count++;
+                if (count > 20) // wait for 200 seconds max
+                {
+                    throw new TimeoutException("Login timed out. Access token not received.");
+                }
+            }
+        }
+
         private async Task GetTokenAsync(ResponseCreatedEventArgs e, string url)
         {
-            if (url.Contains("/api/login/email"))
+            var patterns = new[]
             {
-                var status = e.Response.Status;
-                Console.WriteLine($"Login API called with status: {status}");
-                if (status == System.Net.HttpStatusCode.OK)
+                "/login/email",
+                "login/v3/new-device/otp/verify"
+            };
+
+            foreach (var pattern in patterns)
+            {
+                if (url.Contains(pattern))
                 {
-                    var json = await e.Response.JsonAsync();
-                    var root = json.RootElement;
-
-                    if (root.TryGetProperty("data", out var data))
+                    var status = e.Response.Status;
+                    Console.WriteLine($"Login API called with status: {status}. Url : {url}");
+                    if (status == System.Net.HttpStatusCode.OK)
                     {
-                        if (data.TryGetProperty("access", out var accessObj))
-                        {
-                            this.accessToken = accessObj.GetProperty("token").GetString();
-                        }
+                        var json = await e.Response.JsonAsync();
+                        var root = json.RootElement;
 
-                        if (data.TryGetProperty("refresh", out var refreshObj))
+                        if (root.TryGetProperty("data", out var data))
                         {
-                            this.refreshToken = refreshObj.GetProperty("token").GetString();
+                            if (data.TryGetProperty("access", out var accessObj))
+                            {
+                                this.accessToken = accessObj.GetProperty("token").GetString();
+                            }
+
+                            if (data.TryGetProperty("refresh", out var refreshObj))
+                            {
+                                this.refreshToken = refreshObj.GetProperty("token").GetString();
+                            }
                         }
                     }
                 }
@@ -85,28 +106,6 @@ namespace StockbitClient
             await page.TypeAsync("#username", username);
             await page.TypeAsync("#password", password);
             await page.ClickAsync("#email-login-button");
-        }
-
-        private static async Task HandleCaptcha(IPage page)
-        {
-            Thread.Sleep(20000);
-            try
-            {
-                await page.WaitForFunctionAsync(
-                    @"() => !document.body.innerText.includes('I\'m not a robot')",
-                    new WaitForFunctionOptions { Timeout = 60000 } // 60 seconds timeout
-                );
-
-                var button = await page.QuerySelectorAsync("#email-login-button");
-                if (button != null)
-                {
-                    await button.ClickAsync();
-                }
-            }
-            catch (PuppeteerException ex)
-            {
-                throw new Exception("Captcha verification failed", ex);
-            }
         }
 
         public string GetAccessToken()
